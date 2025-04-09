@@ -75,12 +75,20 @@ form.addEventListener('submit', async (e) => {
         const response = await fetch('https://eden-foundation-api.onrender.com/predict_form', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
-            body: JSON.stringify(formData)
+            body: JSON.stringify(formData),
+            mode: 'cors',
+            credentials: 'omit'
         });
 
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const result = await response.json();
+        console.log('API Response:', result); // 添加日誌
 
         if (result.prediction) {
             const predictionResult = result.prediction[0];
@@ -119,6 +127,7 @@ form.addEventListener('submit', async (e) => {
             throw new Error('無法取得預測結果');
         }
     } catch (error) {
+        console.error('API Error:', error); // 添加錯誤日誌
         message.style.color = '#ba5757';
         message.textContent = `發生錯誤：${error.message}`;
         setTimeout(() => {
