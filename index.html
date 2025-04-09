@@ -159,37 +159,6 @@
       <div id="message"></div>
     </div>
 
-    <script>
-      document
-        .getElementById('evaluationForm')
-        .addEventListener('submit', function (e) {
-          e.preventDefault();
-
-          // 驗證團隊人數是否為正整數
-          const teamSize = document.getElementById('teamSize').value;
-          if (teamSize <= 0 || !Number.isInteger(Number(teamSize))) {
-            alert('團隊人數必須為正整數');
-            return;
-          }
-
-          // 收集所有表單數據
-          const formData = {
-            leaderAbility: document.getElementById('leaderAbility').value,
-            leaderStyle: document.getElementById('leaderStyle').value,
-            mainPersonAbility:
-              document.getElementById('mainPersonAbility').value,
-            mainPersonStyle: document.getElementById('mainPersonStyle').value,
-            field: document.getElementById('field').value,
-            teamSize: teamSize,
-            isBenchmark: document.getElementById('isBenchmark').value,
-            isSocialVenture: document.getElementById('isSocialVenture').value,
-          };
-
-          // 這裡可以加入發送數據到後端的代碼
-          console.log('表單數據:', formData);
-          document.getElementById('message').textContent = '表單已成功提交！';
-        });
-    </script>
     <script src="./addScript.js"></script>
   </body>
 </html>

@@ -44,6 +44,13 @@ form.addEventListener('submit', async (e) => {
         return;
     }
 
+    // 驗證團隊人數是否為正整數
+    const teamSize = document.getElementById('teamSize').value;
+    if (teamSize <= 0 || !Number.isInteger(Number(teamSize))) {
+        alert('團隊人數必須為正整數');
+        return;
+    }
+
     const originalText = submitBtn.textContent;
     submitBtn.textContent = '預測中...';
     submitBtn.disabled = true;
