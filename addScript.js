@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const message = document.getElementById('message');
     liff
         .init({
-            liffId: '2006689406-z9kX7DDm', // 請確認此 LIFF ID 是否正確
+            liffId: '2007229383-LyDMdepm', // 請確認此 LIFF ID 是否正確
         })
         .then(() => {
             // 獲取用戶資料
