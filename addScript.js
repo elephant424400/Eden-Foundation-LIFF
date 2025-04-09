@@ -71,7 +71,7 @@ form.addEventListener('submit', async (e) => {
     };
 
     try {
-        // 呼叫預測 API
+        // 呼叫兩個預測 API
         const options = {
             method: 'POST',
             headers: {
@@ -80,26 +80,32 @@ form.addEventListener('submit', async (e) => {
             body: JSON.stringify(formData)
         };
 
-        const response = await fetch('https://eden-foundation-api.onrender.com/predict_form', options);
+        const [formResponse, orgsizeResponse] = await Promise.all([
+            fetch('https://eden-foundation-api.onrender.com/predict_form', options),
+            fetch('https://eden-foundation-api.onrender.com/predict_orgsize', options)
+        ]);
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        if (!formResponse.ok || !orgsizeResponse.ok) {
+            throw new Error(`HTTP error! status: ${formResponse.status} or ${orgsizeResponse.status}`);
         }
 
-        const result = await response.json();
-        console.log('API Response:', result); // 添加日誌
+        const formResult = await formResponse.json();
+        const orgsizeResult = await orgsizeResponse.json();
+        console.log('API Responses:', { formResult, orgsizeResult });
 
-        if (result.prediction) {
-            const predictionResult = result.prediction[0];
+        if (formResult.prediction && orgsizeResult.prediction) {
+            const formPrediction = formResult.prediction[0] || "未知";
+            const orgsizePrediction = orgsizeResult.prediction[0] || "未知";
+
             message.style.color = '#28a745';
-            message.textContent = `預測結果：${predictionResult}`;
+            message.textContent = `預測結果：\n\n樣態：${formPrediction}\n組織規模：${orgsizePrediction}`;
 
             // 回傳訊息給 LINE 使用者
             if (liff.isInClient()) {
                 liff.sendMessages([
                     {
                         type: 'text',
-                        text: `組織評估預測結果：${predictionResult}`
+                        text: `組織評估預測結果：\n\n樣態：${formPrediction}\n組織規模：${orgsizePrediction}`
                     }
                 ]).then(() => {
                     // 訊息發送成功後關閉 LIFF
