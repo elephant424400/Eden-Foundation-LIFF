@@ -72,16 +72,15 @@ form.addEventListener('submit', async (e) => {
 
     try {
         // 呼叫預測 API
-        const response = await fetch('https://eden-foundation-api.onrender.com/predict_form', {
+        const options = {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify(formData),
-            mode: 'cors',
-            credentials: 'omit'
-        });
+            body: JSON.stringify(formData)
+        };
+
+        const response = await fetch('https://eden-foundation-api.onrender.com/predict_form', options);
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
